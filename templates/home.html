@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Real-Time Captioning</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+            socket.on('video_caption_update', function(data) {
+                document.getElementById("video-caption").innerText = data.caption;
+            });
+
+            socket.on('audio_caption_update', function(data) {
+                document.getElementById("audio-caption").innerText = data.caption;
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Real-Time Captioning</h1>
+    <div>
+        <h2>Video Captions</h2>
+        <div id="video-caption"></div>
+    </div>
+    <div>
+        <h2>Audio Captions</h2>
+        <div id="audio-caption"></div>
+    </div>
+    <form action="/start_captioning" method="post">
+        <button type="submit">Start Video Captioning</button>
+    </form>
+    <form action="/stop_captioning" method="post">
+        <button type="submit">Stop Video Captioning</button>
+    </form>
+    <form action="/start_audio_transcription" method="post">
+        <button type="submit">Start Audio Transcription</button>
+    </form>
+    <form action="/stop_audio_transcription" method="post">
+        <button type="submit">Stop Audio Transcription</button>
+    </form>
+</body>
+</html>
